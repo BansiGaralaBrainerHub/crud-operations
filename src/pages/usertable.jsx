@@ -14,7 +14,7 @@ const UserTable = () => {
       });
   }, []);
   return (
-    <Table striped className="mt-5">
+    <Table striped>
       <thead>
         <tr>
           <th>#</th>
