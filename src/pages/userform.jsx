@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
@@ -6,9 +6,12 @@ const UserForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [ispending, setIspending] = useState(false);
+  const [tablelist, setTablelist] = useState("");
+
   const submitForm = (e) => {
     e.preventDefault();
     const tableData = { email, password };
+
     setIspending(true);
     fetch("http://localhost:8000/tableData", {
       method: "POST",
@@ -19,6 +22,15 @@ const UserForm = () => {
       alert("Data Added Successfully!");
     });
   };
+  useEffect(() => {
+    fetch("http://localhost:8000/tableData")
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setTablelist(data);
+      });
+  }, []);
   return (
     <>
       <Form>
@@ -57,11 +69,14 @@ const UserForm = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>{/* {email} */}</td>
-            <td>{/* {password} */}</td>
-          </tr>
+          {tablelist &&
+            tablelist.map((tdata) => (
+              <tr key={tdata.id}>
+                <td>{tdata.id}</td>
+                <td>{tdata.email}</td>
+                <td>{tdata.password}</td>
+              </tr>
+            ))}
         </tbody>
       </Table>
     </>
