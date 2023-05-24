@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Button, Table } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
 const UserForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [ispending, setIspending] = useState(false);
-  const [tablelist, setTablelist] = useState("");
 
   const submitForm = (e) => {
     e.preventDefault();
@@ -22,15 +21,7 @@ const UserForm = () => {
       alert("Data Added Successfully!");
     });
   };
-  useEffect(() => {
-    fetch("http://localhost:8000/tableData")
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setTablelist(data);
-      });
-  }, []);
+
   return (
     <>
       <Form>
@@ -60,25 +51,6 @@ const UserForm = () => {
           {ispending ? "Loading..." : "Submit"}
         </Button>
       </Form>
-      <Table striped className="mt-5">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Email</th>
-            <th>Password</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tablelist &&
-            tablelist.map((tdata) => (
-              <tr key={tdata.id}>
-                <td>{tdata.id}</td>
-                <td>{tdata.email}</td>
-                <td>{tdata.password}</td>
-              </tr>
-            ))}
-        </tbody>
-      </Table>
     </>
   );
 };
